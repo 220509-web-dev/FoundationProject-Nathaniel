@@ -1,6 +1,6 @@
-package dao;
+package foundation.dao;
 
-import entities.AppUser;
+import foundation.entities.AppUser;
 
 import java.util.List;
 
@@ -11,6 +11,9 @@ public interface UserDAO {
 
     //Read
     AppUser getUserById(int id);
+
+    AppUser getUserByUsername(String username);
+
     List<AppUser> getAllUsers();
 
 

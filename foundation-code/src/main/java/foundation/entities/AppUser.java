@@ -1,4 +1,6 @@
-package entities;
+package foundation.entities;
+
+import java.util.Objects;
 
 public class AppUser {
 
@@ -9,6 +11,7 @@ public class AppUser {
     private String password;
 
     public AppUser() {
+        super();
     }
 
     public AppUser(int id, String first_name, String last_name, String username, String password) {
@@ -18,6 +21,7 @@ public class AppUser {
         this.username = username;
         this.password = password;
     }
+
 
     public int getId() {
         return id;
@@ -57,6 +61,19 @@ public class AppUser {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AppUser appUser = (AppUser) o;
+        return id == appUser.id && Objects.equals(first_name, appUser.first_name) && Objects.equals(last_name, appUser.last_name) && Objects.equals(username, appUser.username) && Objects.equals(password, appUser.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, first_name, last_name, username, password);
     }
 
     @Override

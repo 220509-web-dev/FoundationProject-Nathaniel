@@ -3,6 +3,7 @@ package foundation.app;
 import foundation.dao.UserDAO;
 import foundation.dao.UserDAOPostgres;
 import foundation.entities.AppUser;
+import foundation.services.UserService;
 
 public class App {
 
@@ -34,7 +35,7 @@ public class App {
 //        //Remove a user in the table by their ID
 //        userDAO.deleteUserById(2);
 
-
+        AppUser test = new AppUser(12,"Thi","s is","a tes", "st");
 
 
 

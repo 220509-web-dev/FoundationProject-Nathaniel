@@ -81,9 +81,11 @@ public class UserDAOPostgres implements UserDAO {
         }
         return null;
     }
+    //Overrides getUserByUsername from the UserDAO interface
     @Override
     public AppUser getUserByUsername(String username) {
 
+        AppUser user = new AppUser();
         try (Connection connect = ConnectionUtil.getInstance().getConnection()) {
             String sql = "select * from foundations_project.app_users where username = ?";
             PreparedStatement ps = connect.prepareStatement(sql);
@@ -92,19 +94,22 @@ public class UserDAOPostgres implements UserDAO {
 
             rs.next();
 
-            AppUser user = new AppUser(rs.getInt("id"), rs.getString("first_name"), rs.getString("last_name"), rs.getString("username"), rs.getString("password"));
+            user.setId(rs.getInt("id"));
+            user.setFirst_name(rs.getString("first_name"));
+            user.setLast_name(rs.getString("last_name"));
+            user.setUsername(rs.getString("username"));
+            user.setPassword(rs.getString("password"));
 
-            System.out.println("Here is your user information: " +  user);
+            //System.out.println("Here is your user information: " +  user);
 
             log = user.getUsername() + " looked up";
             Logger.log(log, LoggerLevels.INFO);
-            return user;
 
         } catch (SQLException e) {
             log = "User with username of: " + username + " cannot be found.";
             Logger.log(log, LoggerLevels.ERROR);
-            throw new InvalidCredentialsException();
         }
+        return user;
     }
 
     //Overrides getAllUsers from the UserDAO interface

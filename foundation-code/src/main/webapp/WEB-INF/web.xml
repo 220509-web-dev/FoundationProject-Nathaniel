@@ -3,25 +3,22 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
+    <display-name>Foundations Project</display-name>
+    <welcome-file-list>
+        <welcome-file>login.html</welcome-file>
+    </welcome-file-list>
+    <listener>
+        <listener-class>foundation.util.ContextLoaderListener</listener-class>
+    </listener>
 
-    <servlet>
-        <servlet-name>SanityServlet</servlet-name>
-        <servlet-class>foundation.servlets.SanityServlet</servlet-class>
-    </servlet>
+    <filter>
+        <filter-name>CorsFilter</filter-name>
+        <filter-class>foundation.filters.CorsFilter</filter-class>
+    </filter>
 
-    <servlet-mapping>
-        <servlet-name>SanityServlet</servlet-name>
-        <url-pattern>/sanity</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>AppUserServlet</servlet-name>
-        <servlet-class>foundation.servlets.AppUserServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>AppUserServlet</servlet-name>
-        <url-pattern>/login</url-pattern>
-    </servlet-mapping>
+    <filter-mapping>
+        <filter-name>CorsFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
 </web-app>

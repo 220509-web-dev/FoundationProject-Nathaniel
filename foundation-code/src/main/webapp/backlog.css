@@ -1,0 +1,52 @@
+
+body {
+    background-image: url("https://store.cloudflare.steamstatic.com/public/images/v6/colored_body_top.png?v=2f"), url("https://i.imgur.com/p0FgIXm.png");
+    background-repeat: no-repeat, repeat;
+    background-color: #1b2838;
+  }
+#parent {
+    position: relative;
+    width: 500px;
+    margin: auto;
+    padding: 100px 20px 20px 20px ;
+}
+.form-signin {
+    padding: 10% 0 0 0;
+    margin: 10px;
+}
+.form-floating {
+    margin: 10px;
+}
+.btn {
+    margin-top: 10px;
+    max-width: 30%;
+    background: linear-gradient(90deg, #06BFFF 0%, #2D73FF 100%);
+    text-transform: uppercase;
+    font-family: "Motiva Sans", Sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    letter-spacing: 0.03em;
+    box-shadow: 0 0 4px #000;;
+}
+.btn:hover {
+    background: linear-gradient(90deg, #06BFFF 30%, #2D73FF 100%);
+    color: white;
+}
+.mb-3 {
+    color: white;
+    font-family: "Motiva Sans", Sans-serif
+}
+a:hover {
+    color: #171a21;
+}
+a {
+    color: white;
+}
+p {
+    margin: 5px;
+    font-family: "Motiva Sans", Sans-serif
+}
+#error-message {
+    display: none;
+}

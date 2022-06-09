@@ -40,8 +40,8 @@ public class ConnectionUtil {
     public Connection getConnection() throws SQLException {
 
         Connection conn = DriverManager.getConnection(props.getProperty("db-url"),
-                props.getProperty("db-username"),
-                props.getProperty("db-password"));
+                                                      props.getProperty("db-username"),
+                                                      props.getProperty("db-password"));
         if (conn == null) {
             throw new RuntimeException("Could not establish a connection to the database");
         }

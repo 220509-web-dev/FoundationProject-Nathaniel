@@ -2,6 +2,7 @@ window.onload = function() {
     console.log('The page loaded!');
     let button = document.getElementById('login-button');
     button.addEventListener('click', login);
+    
 
 }
 
@@ -16,9 +17,13 @@ function login() {
     let username = usernameInput.value;
     let password = passwordInput.value;
     console.log(username, password)
+    if (!username || !password) {
+        errorContainer.removeAttribute('hidden');
+        errorContainer.innerText = "You must provide a username and password!";
+    }
     if (username && password) {
 
-//        errorContainer.setAttribute('hidden', true);
+        errorContainer.setAttribute('hidden', true);
 
         let respData = fetch('http://localhost:8080/foundation/login', {
             method: 'POST',
@@ -31,7 +36,7 @@ function login() {
             console.log(`Response timestamp: ${Date.now()}`);
 
             if (resp.status !== 200) {
-                errorContainer.removeAttribute('display');
+                errorContainer.removeAttribute('hidden');
                 errorContainer.innerText = "Login failed!";
                 return;
             }
@@ -47,13 +52,5 @@ function login() {
                 document.getElementById('parent').appendChild(successMsgContainer);
             });
         }
-
-    } else {
-
-        // Show the error message
-        errorContainer.removeAttribute('display');
-        errorContainer.innerText = "You must provide a username and password!";
-
     }
-
 }

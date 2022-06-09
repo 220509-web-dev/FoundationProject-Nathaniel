@@ -1,13 +1,12 @@
 package foundation.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import foundation.dao.UserDAOPostgres;
 import foundation.dto.ErrorResponse;
 import foundation.entities.AppUser;
 import foundation.exception.DataSourceException;
 import foundation.exception.InvalidCredentialsException;
 import foundation.exception.InvalidRequestException;
-import foundation.services.UserService;
+import foundation.services.AuthService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,15 +14,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 
 public class AuthServlet extends HttpServlet {
 
     private final ObjectMapper mapper;
-    private final UserService userService;
+    private final AuthService userService;
 
-    public AuthServlet(ObjectMapper mapper, UserService userService) {
+    public AuthServlet(ObjectMapper mapper, AuthService userService) {
         this.mapper = mapper;
         this.userService = userService;
     }
@@ -42,12 +40,17 @@ public class AuthServlet extends HttpServlet {
             session.setAttribute("auth-user", dbUser);
 
             String respPayload = mapper.writeValueAsString(dbUser);
+            resp.setContentType("application/json");
             resp.getWriter().write(respPayload);
             resp.setStatus(200);
+            return;
 
         } catch (InvalidCredentialsException e) {
             resp.setStatus(400);
             resp.getWriter().write(mapper.writeValueAsString(new ErrorResponse(400, e.getMessage())));
+        } catch (InvalidRequestException e) {
+            resp.setStatus(404);
+            resp.getWriter().write(mapper.writeValueAsString(new ErrorResponse(404,e.getMessage())));
         } catch (DataSourceException e) {
             resp.setStatus(500);
             System.out.println(e.getMessage());

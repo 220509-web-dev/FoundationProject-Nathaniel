@@ -1,7 +1,7 @@
 package foundation.dao;
 
 import foundation.entities.AppUser;
-import foundation.exception.InvalidCredentialsException;
+import foundation.exception.InvalidRequestException;
 import foundation.exception.UsernameNotAvailableException;
 import foundation.util.ConnectionUtil;
 import foundation.util.Logger;
@@ -47,7 +47,6 @@ public class UserDAOPostgres implements UserDAO {
             log = "User with username of: " + user.getUsername() + " already exists.";
             Logger.log(log, LoggerLevels.ERROR);
             throw new UsernameNotAvailableException(log);
-
         }
     }
 
@@ -77,9 +76,10 @@ public class UserDAOPostgres implements UserDAO {
             return user;
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            log = "User with id of: " + id + " cannot be found.";
+            Logger.log(log, LoggerLevels.ERROR);
+            throw new InvalidRequestException(log);
         }
-        return null;
     }
     //Overrides getUserByUsername from the UserDAO interface
     @Override
@@ -104,12 +104,13 @@ public class UserDAOPostgres implements UserDAO {
 
             log = user.getUsername() + " looked up";
             Logger.log(log, LoggerLevels.INFO);
-
+            return user;
         } catch (SQLException e) {
             log = "User with username of: " + username + " cannot be found.";
             Logger.log(log, LoggerLevels.ERROR);
+            throw new InvalidRequestException(log);
         }
-        return user;
+
     }
 
     //Overrides getAllUsers from the UserDAO interface
@@ -141,12 +142,10 @@ public class UserDAOPostgres implements UserDAO {
             return users;
 
         } catch (SQLException e) {
-            log = "Error accessing information from database";
+            log = "Unable to process request";
             Logger.log(log, LoggerLevels.ERROR);
-            e.printStackTrace();
+            throw new InvalidRequestException(log);
         }
-        return null;
-
     }
 
     //Overrides updateUser from the UserDAO interface

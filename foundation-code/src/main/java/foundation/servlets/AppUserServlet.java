@@ -2,7 +2,9 @@ package foundation.servlets;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import foundation.dao.UserDAOPostgres;
+import foundation.dto.ErrorResponse;
 import foundation.entities.AppUser;
+import foundation.exception.InvalidRequestException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,31 +25,56 @@ public class AppUserServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<AppUser> users = userDAO.getAllUsers();
+        try {
+            List<AppUser> users = userDAO.getAllUsers();
 
-        String respPayload = mapper.writeValueAsString(users);
-        resp.setContentType("application/json");
-        resp.getWriter().write(respPayload);
+            String respPayload = mapper.writeValueAsString(users);
+            resp.setContentType("application/json");
+            resp.getWriter().write(respPayload);
+        } catch (InvalidRequestException e) {
+
+        }
     }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("[LOG] - Test received at: " + LocalDateTime.now()); //this is temporary
-
-
-        AppUser reqUser = mapper.readValue(req.getInputStream(), AppUser.class);
-        AppUser dbUser = userDAO.getUserByUsername(reqUser.getUsername());
-
-        System.out.println("req: " + reqUser);
-        System.out.println("resp: " + dbUser); //also temporary
-
-        String respPayload = mapper.writeValueAsString(dbUser);
         resp.setContentType("application/json");
-        resp.getWriter().write(respPayload);
-        resp.setStatus(200);
+        try {
+            AppUser reqUser = mapper.readValue(req.getInputStream(), AppUser.class);
+            String reqUsername = reqUser.getUsername();
+            System.out.println(reqUsername);
+            String reqFirstName = reqUser.getFirst_name();
+            System.out.println(reqFirstName);
+            AppUser dbUser;
+            System.out.println("req: " + reqUser);
+            if (reqUsername != null) {
+                if (reqFirstName != null) {
+                    userDAO.createUser(reqUser);
 
+                    String respPayload = mapper.writeValueAsString(reqUser.getId());
+                    resp.getWriter().write(respPayload);}
+
+                dbUser = userDAO.getUserByUsername((reqUser.getUsername()));
+                System.out.println("resp: " + dbUser); //also temporary
+
+                String respPayload = mapper.writeValueAsString(dbUser);
+                resp.getWriter().write(respPayload);
+
+
+            }else {
+                dbUser = userDAO.getUserById((reqUser.getId()));
+                System.out.println("resp: " + dbUser); //also temporary
+
+                String respPayload = mapper.writeValueAsString(dbUser);
+                resp.setContentType("application/json");
+                resp.getWriter().write(respPayload);
+            }
+            resp.setStatus(200);
+        } catch (InvalidRequestException e) {
+            resp.setStatus(404);
+            resp.getWriter().write(mapper.writeValueAsString(new ErrorResponse(404, e.getMessage())));
+        }
     }
-
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doPut(req, resp);

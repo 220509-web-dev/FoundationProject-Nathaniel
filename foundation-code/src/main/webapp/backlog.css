@@ -1,6 +1,6 @@
 
 body {
-    background-image: url("https://store.cloudflare.steamstatic.com/public/images/v6/colored_body_top.png?v=2f"), url("https://i.imgur.com/p0FgIXm.png");
+    background-image: url("https://i.imgur.com/qLO0LjO.png");
     background-repeat: no-repeat, repeat;
     background-color: #1b2838;
   }
@@ -46,7 +46,4 @@ a {
 p {
     margin: 5px;
     font-family: "Motiva Sans", Sans-serif
-}
-#error-message {
-    display: none;
 }

@@ -6,11 +6,11 @@ import foundation.entities.AppUser;
 import foundation.exception.DataSourceException;
 import foundation.exception.InvalidCredentialsException;
 
-public class UserService {
+public class AuthService {
 
     private final UserDAOPostgres userDAO;
 
-    public UserService(UserDAOPostgres userDAO) {
+    public AuthService(UserDAOPostgres userDAO) {
         this.userDAO=userDAO;
     }
 

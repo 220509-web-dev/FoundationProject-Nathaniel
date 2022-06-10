@@ -142,7 +142,7 @@ public class UserDAOPostgres implements UserDAO {
             return users;
 
         } catch (SQLException e) {
-            log = "Unable to process request";
+            log = "Unable to process GET ALL request";
             Logger.log(log, LoggerLevels.ERROR);
             throw new InvalidRequestException(log);
         }
@@ -169,7 +169,7 @@ public class UserDAOPostgres implements UserDAO {
             return user;
 
         } catch (SQLException e) {
-            log = "Error updating user" + user;
+            log = "Error updating user" + user.getId();
             Logger.log(log, LoggerLevels.ERROR);
             e.printStackTrace();
         }

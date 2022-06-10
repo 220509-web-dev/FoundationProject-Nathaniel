@@ -5,6 +5,7 @@ import foundation.dao.UserDAOPostgres;
 import foundation.dto.ErrorResponse;
 import foundation.entities.AppUser;
 import foundation.exception.InvalidRequestException;
+import foundation.exception.UsernameNotAvailableException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -71,8 +72,11 @@ public class AppUserServlet extends HttpServlet {
             }
             resp.setStatus(200);
         } catch (InvalidRequestException e) {
-            resp.setStatus(404);
-            resp.getWriter().write(mapper.writeValueAsString(new ErrorResponse(404, e.getMessage())));
+            resp.setStatus(400);
+            resp.getWriter().write(mapper.writeValueAsString(new ErrorResponse(400, e.getMessage())));
+        } catch (UsernameNotAvailableException e) {
+            resp.setStatus(400);
+            resp.getWriter().write(mapper.writeValueAsString(new ErrorResponse(400, "This Username is not available, please try again.")));
         }
     }
     @Override

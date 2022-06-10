@@ -7,6 +7,8 @@ import foundation.exception.DataSourceException;
 import foundation.exception.InvalidCredentialsException;
 import foundation.exception.InvalidRequestException;
 import foundation.services.AuthService;
+import foundation.util.Logger;
+import foundation.util.LoggerLevels;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -30,6 +32,7 @@ public class AuthServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         resp.setContentType("application/json");
+        String log;
         try {
             HashMap<String, Object> credentials = mapper.readValue(req.getInputStream(), HashMap.class);
             String providedUsername = (String) credentials.get("username");
@@ -43,14 +46,13 @@ public class AuthServlet extends HttpServlet {
             resp.setContentType("application/json");
             resp.getWriter().write(respPayload);
             resp.setStatus(200);
-            return;
 
         } catch (InvalidCredentialsException e) {
             resp.setStatus(400);
             resp.getWriter().write(mapper.writeValueAsString(new ErrorResponse(400, e.getMessage())));
         } catch (InvalidRequestException e) {
-            resp.setStatus(404);
-            resp.getWriter().write(mapper.writeValueAsString(new ErrorResponse(404,e.getMessage())));
+            resp.setStatus(400);
+            resp.getWriter().write(mapper.writeValueAsString(new ErrorResponse(400,e.getMessage())));
         } catch (DataSourceException e) {
             resp.setStatus(500);
             System.out.println(e.getMessage());
